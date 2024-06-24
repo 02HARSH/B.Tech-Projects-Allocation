@@ -1,3 +1,4 @@
+
 from flask import Flask, request, send_file, render_template
 import pandas as pd
 import os
@@ -8,20 +9,22 @@ def read_student_preferences(file_path):
     df = pd.read_excel(file_path)
     student_preferences = []
     for index, row in df.iterrows():
-        student = row[0]
-        preferences = row[1:].dropna().tolist()
+        student = row.iloc[0]  # Change row[0] to row.iloc[0]
+        preferences = row.iloc[1:].dropna().tolist()  # Change row[1:] to row.iloc[1:]
         student_preferences.append({'student': student, 'preferences': preferences})
     return student_preferences
+
 
 def read_faculty_preferences(file_path):
     df = pd.read_excel(file_path)
     faculty_order = df.iloc[:, 0].tolist()
     faculty_preferences = {}
     for index, row in df.iterrows():
-        faculty = row[0]
-        preferences = row[1:].dropna().tolist()
+        faculty = row.iloc[0]  # Change row[0] to row.iloc[0]
+        preferences = row.iloc[1:].dropna().tolist()  # Change row[1:] to row.iloc[1:]
         faculty_preferences[faculty] = preferences
     return faculty_preferences, faculty_order
+
 
 def allocate_students(student_preferences, faculty_preferences):
     allocated_students = {faculty: [] for faculty in faculty_preferences.keys()}
